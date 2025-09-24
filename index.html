@@ -3,39 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Split-It - Advanced Expense Splitting</title>
-    
+    <title>Split-It - AI Expense Splitting</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body class="p-4 md:p-8">
-
     <div id="app-container" class="max-w-4xl mx-auto">
-        <header class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800">Split-It</h1>
-            <p class="text-gray-500 mt-2">Advanced expense sharing with multi-currency and settlement tracking.</p>
-        </header>
-
-        <main id="group-list-view">
-            <div class="card p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-gray-700">My Groups</h2>
-                <form id="create-group-form" class="flex flex-col sm:flex-row gap-4 mb-6">
-                    <input type="text" id="group-name-input" placeholder="Enter new group name" class="flex-grow" required>
-                    <select id="group-currency-select" class="sm:w-48" required></select>
-                    <button type="submit" class="btn btn-primary">Create Group</button>
-                </form>
-                <div id="groups-container" class="space-y-3">
-                     <p class="text-center text-gray-500 p-4">You have no groups yet.</p>
+        <main id="login-view">
+            <div class="card p-8 max-w-sm mx-auto">
+                <div id="login-form-container">
+                    <h1 class="text-2xl font-bold text-gray-800 text-center">Login to Split-It</h1>
+                    <form action="/login" method="POST" class="mt-6 space-y-4">
+                        <div><label for="username">Username</label><input type="text" id="username" name="username" required></div>
+                        <div><label for="password">Password</label><input type="password" id="password" name="password" required></div>
+                        <button type="submit" class="btn btn-primary w-full">Login</button>
+                    </form>
+                    <p class="text-center text-sm mt-4">No account? <a href="#" id="show-register" class="font-medium text-indigo-600">Register here</a></p>
+                </div>
+                <div id="register-form-container" class="hidden">
+                    <h1 class="text-2xl font-bold text-gray-800 text-center">Create Account</h1>
+                    <form action="/register" method="POST" class="mt-6 space-y-4">
+                        <div><label for="reg-username">Username</label><input type="text" id="reg-username" name="username" required></div>
+                        <div><label for="reg-password">Password</label><input type="password" id="reg-password" name="password" required></div>
+                        <button type="submit" class="btn btn-primary w-full">Register</button>
+                    </form>
+                    <p class="text-center text-sm mt-4">Have an account? <a href="#" id="show-login" class="font-medium text-indigo-600">Login here</a></p>
                 </div>
             </div>
         </main>
 
-        <section id="group-detail-view" class="hidden"></section>
-    </div>
+        <div id="main-app-view" class="hidden">
+            <header class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 id="welcome-message" class="text-2xl font-bold text-gray-800"></h1>
+                    <p id="user-identifier" class="text-gray-500">Manage your shared expenses.</p>
+                </div>
+                <a href="/logout" class="btn bg-red-100 text-red-600 hover:bg-red-200">Logout</a>
+            </header>
 
-    <script src="script.js"></script>
+            <main id="group-list-view">
+                <div class="card p-6">
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-700">My Groups</h2>
+                    <form id="create-group-form" class="flex flex-col sm:flex-row gap-4 mb-6">
+                        <input type="text" id="group-name-input" placeholder="Enter new group name" class="flex-grow" required>
+                        <select id="group-currency-select" class="sm:w-48" required></select>
+                        <button type="submit" class="btn btn-primary">Create Group</button>
+                    </form>
+                    <div id="groups-container" class="space-y-3"></div>
+                </div>
+            </main>
+            <section id="group-detail-view" class="hidden"></section>
+        </div>
+
+        <div id="settlement-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+            <div class="card p-6 w-full max-w-md">
+                <h3 class="text-xl font-semibold mb-4">Settle Payment</h3>
+                <p id="settlement-modal-text" class="mb-4"></p>
+                <form id="settlement-form">
+                    <div class="mb-4">
+                        <label for="settlement-amount-input" class="block font-medium text-gray-700 mb-2">Amount to Settle</label>
+                        <input type="number" id="settlement-amount-input" name="settlementAmount" step="0.01" min="0.01" class="w-full" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="proof-image-input" class="block font-medium text-gray-700 mb-2">Upload Proof (Optional)</label>
+                        <input type="file" id="proof-image-input" name="proofImage" accept="image/*" class="w-full">
+                    </div>
+                    <div class="flex justify-end gap-4">
+                        <button type="button" id="cancel-settlement-btn" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Confirm Settlement</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/script.js"></script>
 </body>
 </html>
